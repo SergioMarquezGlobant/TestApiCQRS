@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace TestWebApi
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
             services.AddMediatR(typeof(Startup));
+            services.AddAutoMapper(typeof(TodoItemsProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
