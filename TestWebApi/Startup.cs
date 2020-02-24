@@ -13,7 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TestWebApi.Core;
 using TestWebApi.Models;
+using TestWebApi.Persistence;
 
 namespace TestWebApi
 {
@@ -31,8 +33,9 @@ namespace TestWebApi
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(TodoItemsProfile));
+            services.AddAutoMapper(typeof(MapperProfiles));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
