@@ -10,7 +10,7 @@ namespace TestWebApi.Core.Repositories
     {
         TEntity Get(int id);
 
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 

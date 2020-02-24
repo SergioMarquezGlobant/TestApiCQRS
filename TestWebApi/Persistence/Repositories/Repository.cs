@@ -21,9 +21,9 @@ namespace TestWebApi.Persistence.Repositories
             return Context.Set<TEntity>().Find(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return Context.Set<TEntity>().ToList();
+            return await Context.Set<TEntity>().ToListAsync();
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)

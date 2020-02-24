@@ -21,12 +21,14 @@ namespace TestWebApi.Persistence.Repositories
 
         public void CreateItem()
         {
-            Context.Add(new TodoItem()
+            context.Add(new TodoItem()
             {
                 Id = 1,
                 IsComplete = true,
                 Name = "I'm a SDC Item"
             });
         }
+
+        public TodoContext context => Context as TodoContext;
     }
 }
