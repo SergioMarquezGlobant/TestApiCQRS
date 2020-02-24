@@ -12,35 +12,35 @@ using TestWebApi.Querys;
 
 namespace TestWebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TodoItemsController : ControllerBase
+    public class TodoItemsController : ApiControllerBase
     {
         private readonly TodoContext _context;
-        private readonly IMediator _mediator;
 
-        public TodoItemsController(TodoContext context, IMediator mediator)
+        public TodoItemsController(IMediator mediator, TodoContext context) : base(mediator)
         {
             _context = context;
-            _mediator = mediator;
         }
 
         // GET: api/TodoItems
         [HttpGet]
         public async Task<IActionResult> GetTodoItem()
         {
-            var query = new GetAllTodoItemsQuery();
-            var result = await _mediator.Send(query);
-            return Ok(result);
+            return Ok(await QueryAsync(new GetAllTodoItemsQuery()));
+
+            //var query = new GetAllTodoItemsQuery();
+            //var result = await _mediator.Send(query);
+            //return Ok(result);
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTodoItem(long id)
         {
-            var query = new GetTodoItemQuery(id);
-            var result = await _mediator.Send(query);
-            return result != null ? (IActionResult)Ok(result) : NotFound();
+            return Ok(await QueryAsync(new GetTodoItemQuery(id)));
+
+            //var query = new GetTodoItemQuery(id);
+            //var result = await _mediator.Send(query);
+            //return result != null ? (IActionResult)Ok(result) : NotFound();
         }
 
         // PUT: api/TodoItems/5
@@ -73,6 +73,7 @@ namespace TestWebApi.Controllers
             }
 
             return NoContent();
+
         }
 
         // POST: api/TodoItems
@@ -81,8 +82,10 @@ namespace TestWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]CreateTodoItemCommand todoItem)
         {
-            var result = await _mediator.Send(todoItem);
-            return CreatedAtAction("GetTodoItem", new { id = result.Id }, result);
+            return Ok(await CommandAsync(todoItem));
+
+            //var result = await _mediator.Send(todoItem);
+            //return CreatedAtAction("GetTodoItem", new { id = result.Id }, result);
         }
 
         // DELETE: api/TodoItems/5

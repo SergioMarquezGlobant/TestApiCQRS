@@ -13,7 +13,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using TestWebApi.Core;
+using TestWebApi.Core.Repositories;
 using TestWebApi.Models;
+using TestWebApi.Persistence;
+using TestWebApi.Persistence.Repositories;
 
 namespace TestWebApi
 {
@@ -32,7 +37,11 @@ namespace TestWebApi
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(TodoItemsProfile));
+            services.AddAutoMapper(typeof(MapperProfiles));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CQRS Test API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +61,14 @@ namespace TestWebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
             });
         }
     }

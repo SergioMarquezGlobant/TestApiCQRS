@@ -4,9 +4,9 @@ using TestWebApi.Models;
 
 namespace TestWebApi
 {
-    public class TodoItemsProfile : Profile
+    public class MapperProfiles : Profile
     {
-        public TodoItemsProfile()
+        public MapperProfiles()
         {
             CreateMap<TodoItem, TodoItemDTO>();
         }
