@@ -14,11 +14,8 @@ namespace TestWebApi.Controllers
 {
     public class TodoItemsController : ApiControllerBase
     {
-        private readonly TodoContext _context;
-
-        public TodoItemsController(IMediator mediator, TodoContext context) : base(mediator)
+        public TodoItemsController(IMediator mediator) : base(mediator)
         {
-            _context = context;
         }
 
         // GET: api/TodoItems
@@ -49,38 +46,14 @@ namespace TestWebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
         {
-            if (id != todoItem.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(todoItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TodoItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-
+            throw new NotImplementedException();
         }
 
         // POST: api/TodoItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]CreateTodoItemCommand todoItem)
+        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody] CreateTodoItemCommand todoItem)
         {
             return Ok(await CommandAsync(todoItem));
 
@@ -92,21 +65,12 @@ namespace TestWebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id)
         {
-            var todoItem = await _context.TodoItem.FindAsync(id);
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
-
-            _context.TodoItem.Remove(todoItem);
-            await _context.SaveChangesAsync();
-
-            return todoItem;
+            throw new NotImplementedException();
         }
 
         private bool TodoItemExists(long id)
         {
-            return _context.TodoItem.Any(e => e.Id == id);
+            throw new NotImplementedException();
         }
     }
 }

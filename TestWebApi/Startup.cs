@@ -36,6 +36,7 @@ namespace TestWebApi
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMediatR(typeof(Startup));
             services.AddAutoMapper(typeof(MapperProfiles));
             services.AddSwaggerGen(c =>
