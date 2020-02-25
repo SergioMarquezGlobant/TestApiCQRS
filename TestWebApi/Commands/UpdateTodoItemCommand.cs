@@ -4,7 +4,7 @@ using TestWebApi.Models;
 
 namespace TestWebApi.Commands
 {
-    public class CreateTodoItemCommand : TodoItemDto, IRequest<TodoItem>
+    public class UpdateTodoItemCommand : TodoItemDto, IRequest<TodoItem>
     {
 
     }
