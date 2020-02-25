@@ -6,33 +6,35 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TestWebApi.Commands;
+using TestWebApi.Core;
 using TestWebApi.Models;
 
 namespace TestWebApi.Handlers.Commands
 {
     public class UpdateTodoItemHandler : IRequestHandler<UpdateTodoItemCommand, TodoItem>
     {
-        private readonly TodoContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateTodoItemHandler(TodoContext context, IMapper mapper)
+        public UpdateTodoItemHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<TodoItem> Handle(UpdateTodoItemCommand request, CancellationToken cancellationToken)
         {
             var todoItem = _mapper.Map<TodoItem>(request);
-            _context.Entry(todoItem).State = EntityState.Modified;
+            _unitOfWork.Items.Update(todoItem);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+                return todoItem;
             }
             catch (DbUpdateConcurrencyException dbex)
             {
-                //TODO fix this...
                 if (!TodoItemExists(todoItem.Id))
                 {
                     throw new Exception("Not Found");
@@ -42,13 +44,11 @@ namespace TestWebApi.Handlers.Commands
                     throw dbex;
                 }
             }
-                
-            return todoItem;
         }
 
         private bool TodoItemExists(long id)
         {
-            return _context.TodoItem.Any(e => e.Id == id);
+            return _unitOfWork.Items.FindAsync(m => m.Id == id).Result.Any();
         }
     }
 }

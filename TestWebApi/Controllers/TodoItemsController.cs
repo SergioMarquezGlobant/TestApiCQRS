@@ -31,7 +31,7 @@ namespace TestWebApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, [FromBody]UpdateTodoItemCommand todoItem)
+        public async Task<IActionResult> PutTodoItem(long id, [FromBody] UpdateTodoItemCommand todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -52,8 +52,13 @@ namespace TestWebApi.Controllers
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem([FromBody]DeleteTodoItemCommand todoItem)
+        public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id, [FromBody] DeleteTodoItemCommand todoItem)
         {
+            if (id != todoItem.Id)
+            {
+                return BadRequest();
+            }
+
             return Ok(await CommandAsync(todoItem));
         }
     }

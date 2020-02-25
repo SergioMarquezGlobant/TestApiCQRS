@@ -22,10 +22,11 @@ namespace TestWebApi.Handlers.Commands
 
         public async Task<TodoItem> Handle(CreateTodoItemCommand request, CancellationToken cancellationToken)
         {
+            var todoItem = _mapper.Map<TodoItem>(request);
+            _unitOfWork.Items.AddAsync(todoItem);
+
             try
             {
-                var todoItem = _mapper.Map<TodoItem>(request);
-                _unitOfWork.Items.AddAsync(todoItem);
                 await _unitOfWork.CommitAsync();
 
                 return todoItem;
@@ -34,7 +35,6 @@ namespace TestWebApi.Handlers.Commands
             {
                 throw ex;
             }
-            
         }
     }
 }
