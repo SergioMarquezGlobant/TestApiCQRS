@@ -10,8 +10,11 @@ namespace TestWebApi.Persistence.Repositories
 {
     public class TodoItemRepository : Repository<TodoItem>, ITodoItemRepository
     {
+        private readonly TodoContext _context;
+
         public TodoItemRepository(TodoContext context) : base(context)
         {
+            _context = context;
         }
 
         public void DoSomething()
@@ -21,14 +24,12 @@ namespace TestWebApi.Persistence.Repositories
 
         public void CreateItem()
         {
-            context.Add(new TodoItem()
+            _context.Add(new TodoItem()
             {
                 Id = 1,
                 IsComplete = true,
                 Name = "I'm a SDC Item"
             });
         }
-
-        public TodoContext context => Context as TodoContext;
     }
 }

@@ -20,6 +20,10 @@ namespace TestWebApi.Core.Repositories
 
         void AddRangeAsync(IEnumerable<TEntity> entities);
 
+        void Update(TEntity entity);
+
+        void UpdateRange(IEnumerable<TEntity> entities);
+
         void Remove(TEntity entity);
 
         void RemoveRange(IEnumerable<TEntity> entities);

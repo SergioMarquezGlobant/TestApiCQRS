@@ -10,51 +10,61 @@ namespace TestWebApi.Persistence.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DbContext Context;
+        private readonly DbSet<TEntity> _entities;
 
         public Repository(DbContext context)
         {
-            Context = context;
+            _entities = context.Set<TEntity>();
         }
+
         public async Task<TEntity> GetAsync(long id)
         {
-            return await Context.Set<TEntity>().FindAsync(id);
+            return await _entities.FindAsync(id);
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await Context.Set<TEntity>().ToListAsync();
+            return await _entities.ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Context.Set<TEntity>().Where(predicate).ToListAsync();
+            return await _entities.Where(predicate).ToListAsync();
         }
 
         public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Context.Set<TEntity>().SingleOrDefaultAsync(predicate);
+            return await _entities.SingleOrDefaultAsync(predicate);
         }
 
         public async void AddAsync(TEntity entity)
         {
-            await Context.Set<TEntity>().AddAsync(entity);
+            await _entities.AddAsync(entity);
         }
 
         public async void AddRangeAsync(IEnumerable<TEntity> entities)
         {
-            await Context.Set<TEntity>().AddRangeAsync(entities);
+            await _entities.AddRangeAsync(entities);
+        }
+
+        public void Update(TEntity entity)
+        {
+            _entities.Update(entity);
+        }
+
+        public void UpdateRange(IEnumerable<TEntity> entities)
+        {
+            _entities.UpdateRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
+            _entities.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            Context.Set<TEntity>().RemoveRange(entities);
+            _entities.RemoveRange(entities);
         }
     }
-
 }
