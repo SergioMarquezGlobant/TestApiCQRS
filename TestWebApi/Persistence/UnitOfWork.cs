@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Tasks;
 using TestWebApi.Core;
 using TestWebApi.Core.Repositories;
 using TestWebApi.Models;
@@ -34,6 +28,11 @@ namespace TestWebApi.Persistence
         public void Commit()
         {
             _context.SaveChanges();
+        }
+
+        public async Task<int> CommitAsync() 
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

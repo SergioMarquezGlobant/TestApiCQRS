@@ -4,18 +4,19 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TestWebApi.Commands;
+using TestWebApi.Core;
 using TestWebApi.Models;
 
 namespace TestWebApi.Handlers.Commands
 {
     public class CreateTodoItemHandler : IRequestHandler<CreateTodoItemCommand, TodoItem>
     {
-        private readonly TodoContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateTodoItemHandler(TodoContext context, IMapper mapper)
+        public CreateTodoItemHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -24,8 +25,8 @@ namespace TestWebApi.Handlers.Commands
             try
             {
                 var todoItem = _mapper.Map<TodoItem>(request);
-                _context.TodoItem.Add(todoItem);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Items.AddAsync(todoItem);
+                await _unitOfWork.CommitAsync();
 
                 return todoItem;
             }

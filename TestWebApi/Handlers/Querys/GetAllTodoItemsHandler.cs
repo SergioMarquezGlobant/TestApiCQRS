@@ -1,10 +1,8 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TestWebApi.Core;
-using TestWebApi.Core.Repositories;
 using TestWebApi.Models;
 using TestWebApi.Querys;
 
