@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TestWebApi.DTO;
+using TestWebApi.Dto;
 using TestWebApi.Models;
 
 namespace TestWebApi
@@ -8,7 +8,7 @@ namespace TestWebApi
     {
         public MapperProfiles()
         {
-            CreateMap<TodoItem, TodoItemDTO>();
+            CreateMap<TodoItem, TodoItemDto>().ReverseMap();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace TestWebApi
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
             services.AddControllers();
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper(typeof(MapperProfiles));
+            services.AddAutoMapper(typeof(MapperProfiles).Assembly);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CQRS Test API", Version = "v1" });
