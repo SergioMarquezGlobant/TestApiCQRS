@@ -9,11 +9,8 @@ namespace TestWebApi.Controllers
 {
     public class TodoItemsController : ApiControllerBase
     {
-        private readonly TodoContext _context;
-
-        public TodoItemsController(IMediator mediator, TodoContext context) : base(mediator)
+        public TodoItemsController(IMediator mediator) : base(mediator)
         {
-            _context = context;
         }
 
         // GET: api/TodoItems
@@ -42,14 +39,13 @@ namespace TestWebApi.Controllers
             }
 
             return Ok(await CommandAsync(todoItem));
-
         }
 
         // POST: api/TodoItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]CreateTodoItemCommand todoItem)
+        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody] CreateTodoItemCommand todoItem)
         {
             return Ok(await CommandAsync(todoItem));
         }

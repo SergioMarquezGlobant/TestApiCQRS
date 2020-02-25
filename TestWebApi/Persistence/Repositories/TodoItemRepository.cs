@@ -10,7 +10,7 @@ namespace TestWebApi.Persistence.Repositories
 {
     public class TodoItemRepository : Repository<TodoItem>, ITodoItemRepository
     {
-        public TodoItemRepository(DbContext context) : base(context)
+        public TodoItemRepository(TodoContext context) : base(context)
         {
         }
 
